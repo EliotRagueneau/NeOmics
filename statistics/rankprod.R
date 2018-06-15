@@ -1,7 +1,7 @@
 library("RankProd")
 setwd("./Bureau/gse7631/")
 
-data = read.csv("GSE7631.csv",header=T,row.names = 1)
+data = read.csv("data/GSE7631.csv",header=T,row.names = 1)
 
 
 lateral_root_cap = data[,1:6]
@@ -26,15 +26,16 @@ res_pericycle = topGene(RP_pericycle,cutoff = 0.1,method="pfp",logged=TRUE,logba
 RP_protoplast = RankProducts(protoplast_root,grp.cl,logged=T,na.rm=FALSE,plot=FALSE, rand=123)
 res_protoplast = topGene(RP_protoplast,cutoff = 0.1,method="pfp",logged=TRUE,logbase=2,gene.names=rownames(data))
 
-wr
-ite_res_csv = function(rankprod_res,directory){
+write_res_csv = function(rankprod_res,directory){
   df <- data.frame(V1 = rep(NA, max(sapply(list(rownames(rankprod_res$Table1), rownames(rankprod_res$Table2)), length))))
   df[1:length(rownames(rankprod_res$Table1)),1] = rownames(rankprod_res$Table1)
-  if (length(rownames(rankprod_res$Table2)){
+  if (length(rownames(rankprod_res$Table2))){
     df[1:length(rownames(rankprod_res$Table2)),2] = rownames(rankprod_res$Table2)
   }
-  print(df)
-  write.table(df, file = paste(directory,'RP.csv',sep=""), col.names = FALSE,row.names = FALSE, na = '')
+  else{
+    df[1:length(rownames(rankprod_res$Table1)),2] = rep(NA,length(rownames(rankprod_res$Table1)))
+  }
+  write.table(df, file = paste(directory,'RP.csv',sep=""), col.names = FALSE,row.names = FALSE, na = 'NA')
 }
 
 write_res_csv(res_lateral,"./Arabidopsis/Lateral_root_cap/KNO3_KCL/")

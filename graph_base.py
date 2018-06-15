@@ -59,11 +59,10 @@ def create_directory_nodes(p):
 							tx.merge(Relationship(c,"GROUP_OF",a))
 							
 							for row in reader:
-								if row[0] != "":
-									print row[0]
+								if row[0] != "NA":
 									g_up = graph.find_one("Gene", "Entrez_id", row[0])
 									tx.merge(Relationship(g_up,"IS_DEG",b))
-								if row[1] != "":
+								if row[1] != "NA":
 									g_down = graph.find_one("Gene", "Entrez_id", row[1])
 									tx.merge(Relationship(g_down,"IS_DEG",c))
 							
