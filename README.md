@@ -20,11 +20,11 @@ Copyright (C) 2018  Léauté Ludovic
 
 download neo4j communtity edition 
 
-- $ neo4j (v3.1.1): download neo4j at https://neo4j.com/download/community-edition/
+- neo4j (v3.1.1): download neo4j at https://neo4j.com/download/community-edition/
 
 open your terminal and run the following command:
 
-- $ systemctl {start|stop|restart} neo4j
+- systemctl {start|stop|restart} neo4j
 
 You might now have access to the local interface running on port 7474.
 To see the interface, open a web browser at the adress http://localhost:7474
@@ -32,13 +32,13 @@ If it is your first connexion enter your knew neo4j's username and password (and
 
 install the neo4j-python managing package py2neo (must have python 2.7):
 
-- $ python get-pip.py (if pip not already installed)
+- python get-pip.py (if pip not already installed)
 
-- $ pip install py2neo
+- pip install py2neo
 
 
 ## Database filling
 
-- $ python graph_base [id] [password] [data]
+- python graph_base [id] [password] [data]
 
 
