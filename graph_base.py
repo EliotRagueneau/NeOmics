@@ -78,7 +78,7 @@ def create_gene_nodes(f):
 
 
 def main():
-	#create_gene_nodes(data)
+	create_gene_nodes(data)
 	create_directory_nodes(root_path)
 	
 
