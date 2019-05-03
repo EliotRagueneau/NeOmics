@@ -33,7 +33,7 @@ def create_directory_nodes(p):
 
                 exp_node = Node("Experience", name=exp_name, tissu=tissue)
                 tx.merge(exp_node, primary_label="Experience", primary_key="name")
-                tx.merge(Relationship(tissue_node, "RELATED_TO", exp_node))
+                tx.merge(Relationship(exp_node, "PERFORMED_ON", tissue_node))
 
                 for analyse in os.listdir(os.path.join(p, tissue, exp_name)):
 
@@ -44,23 +44,24 @@ def create_directory_nodes(p):
 
                         if test_types[test_name] == "deg":
 
-                            a = Node("Analysis", name=test_name, analysis_type='deg')
-                            b = Node("Group", name="up", test=test_name)
-                            c = Node("Group", name="down", test=test_name)
-                            tx.create(a)
-                            tx.create(b)
-                            tx.create(c)
-                            tx.merge(Relationship(a, "PERFORMED_ON", exp_node))
-                            tx.merge(Relationship(b, "GROUP_OF", a))
-                            tx.merge(Relationship(c, "GROUP_OF", a))
+                            analysis_node = Node("Analysis", name=test_name, analysis_type='deg')
+                            up_group = Node("Group", name="up", test=test_name)
+                            down_group = Node("Group", name="down", test=test_name)
+                            tx.create(analysis_node)
+                            tx.create(up_group)
+                            tx.create(down_group)
+                            tx.merge(Relationship(analysis_node, "RELATED_TO", exp_node))
+                            tx.merge(Relationship(analysis_node, "ABOUT", tissue_node))
+                            tx.merge(Relationship(up_group, "GROUP_OF", analysis_node))
+                            tx.merge(Relationship(down_group, "GROUP_OF", analysis_node))
 
                             for row in reader:
                                 if row[0] != "NA":
                                     g_up = graph.nodes.match("Gene", name=row[0]).first()
-                                    tx.merge(Relationship(g_up, "IS_DEG", b))
+                                    tx.merge(Relationship(g_up, "IS_DEG", up_group))
                                 if row[1] != "NA":
                                     g_down = graph.nodes.match("Gene", name=row[1]).first()
-                                    tx.merge(Relationship(g_down, "IS_DEG", c))
+                                    tx.merge(Relationship(g_down, "IS_DEG", down_group))
 
         tx.commit()
 
