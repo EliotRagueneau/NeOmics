@@ -12,24 +12,25 @@ ID = sys.argv[1]
 password = sys.argv[2]
 data = sys.argv[3]
 
-graph = Graph("bolt://localhost:11016", auth=("eliot", "1234"))
+graph = Graph("bolt://localhost:7687", auth=(ID, password))
 
 
-def create_tf_nodes(f):
+def add_goi_label(f):
     with open(f) as csvfile:
         tx = graph.begin()
         reader = csv.reader(csvfile, delimiter="\t")
         for row in reader:
-            gene = graph.nodes.match("Gene", Entrez_id=row[0]).first()
+            gene = graph.nodes.match("Gene", name=row[0]).first()
             if gene is not None:
                 gene.update_labels(["Gene", "GOI"])
+                print(gene)
                 tx.push(gene)
 
     tx.commit()
 
 
 def main():
-    create_tf_nodes(data)
+    add_goi_label(data)
 
 
 if __name__ == "__main__":

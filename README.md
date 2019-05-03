@@ -39,11 +39,11 @@ install the neo4j-python managing package py2neo :
 
 ## Database filling
 
-- python graph_base neo4j <password> data/GSE7631_loc.csv
-- python graph_goi neo4j <password> data/P_GOI.txt
-- python graph_tf neo4j <password> data/P_TF_LABEL.txt
-- python graph_ppi neo4j <password> data/P_PPI.txt  *(Long process)*
-- python graph_kmeans neo4j <password> data/kmeans_5  *(OPTIONAL)*
+- python3 graph_base.py neo4j <password> data/GSE7631_loc.csv
+- python3 graph_goi.py neo4j <password> data/P_GOI.txt
+- python3 graph_tf.py neo4j <password> data/P_TF_LABEL.txt
+- python3 graph_ppi.py neo4j <password> data/P_PPI.txt  *(Long process)*
+- python3 graph_kmeans.py neo4j <password> data/kmeans_5 KMEANS5 *(OPTIONAL)*
 
 
 
