@@ -3,10 +3,7 @@
 
 # packages
 
-import csv
-import py2neo
-import sys
-
+import sys, os, py2neo, csv
 from py2neo import *
 
 # Neo4j database connexion
@@ -15,22 +12,23 @@ ID = sys.argv[1]
 password = sys.argv[2]
 data = sys.argv[3]
 
-py2neo.authenticate("localhost:7474", ID, password)
-
-graph = Graph()
+graph = Graph("bolt://localhost:11016", auth=("eliot", "1234"))
 
 
 def create_tf_nodes(f):
     with open(f) as csvfile:
         tx = graph.begin()
         reader = csv.reader(csvfile, delimiter="\t")
+        families = {}
         for row in reader:
-            gene = graph.find_one("Gene", "Entrez_id", row[0])
+            gene = graph.nodes.match("Gene", name=row[0]).first()
             fam = row[1]
-            if gene != None:
+            if fam not in families:
                 z = Node("TF", family=fam)
-                tx.merge(z)
-                tx.create(Relationship(gene, "IS_TF", z))
+                families[fam] = z
+                tx.merge(z, primary_label="TF", primary_key="family")
+            if gene is not None:
+                tx.create(Relationship(gene, "IS_TF", families[fam]))
 
     tx.commit()
 

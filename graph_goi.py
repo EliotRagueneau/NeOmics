@@ -3,10 +3,7 @@
 
 # packages
 
-import csv
-import py2neo
-import sys
-
+import sys, os, py2neo, csv
 from py2neo import *
 
 # Neo4j database connexion
@@ -15,9 +12,7 @@ ID = sys.argv[1]
 password = sys.argv[2]
 data = sys.argv[3]
 
-py2neo.authenticate("localhost:7474", ID, password)
-
-graph = Graph()
+graph = Graph("bolt://localhost:11016", auth=("eliot", "1234"))
 
 
 def create_tf_nodes(f):
@@ -25,10 +20,10 @@ def create_tf_nodes(f):
         tx = graph.begin()
         reader = csv.reader(csvfile, delimiter="\t")
         for row in reader:
-            gene = graph.find_one("Gene", "Entrez_id", row[0])
-            if gene != None:
-                gene.add_label("GOI")
-                gene.push()
+            gene = graph.nodes.match("Gene", Entrez_id=row[0]).first()
+            if gene is not None:
+                gene.update_labels(["Gene", "GOI"])
+                tx.push(gene)
 
     tx.commit()
 

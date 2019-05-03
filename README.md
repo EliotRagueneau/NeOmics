@@ -30,7 +30,7 @@ You might now have access to the local interface running on port 7474.
 To see the interface, open a web browser at the adress http://localhost:7474
 If it is your first connexion enter your knew neo4j's username and password (and remember it)
 
-install the neo4j-python managing package py2neo (must have python 2.7):
+install the neo4j-python managing package py2neo :
 
 - python get-pip.py (if pip not already installed)
 
@@ -39,6 +39,12 @@ install the neo4j-python managing package py2neo (must have python 2.7):
 
 ## Database filling
 
-- python graph_base [id] [password] [data]
+- python graph_base neo4j <password> data/GSE7631_loc.csv
+- python graph_goi neo4j <password> data/P_GOI.txt
+- python graph_tf neo4j <password> data/P_TF_LABEL.txt
+- python graph_ppi neo4j <password> data/P_PPI.txt  *(Long process)*
+- python graph_kmeans neo4j <password> data/kmeans_5  *(OPTIONAL)*
+
+
 
 
