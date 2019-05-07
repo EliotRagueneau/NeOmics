@@ -3,7 +3,7 @@
 
 # packages
 
-import sys, os, py2neo, csv
+import sys, os, csv
 from py2neo import *
 
 # Neo4j database connexion
@@ -12,7 +12,7 @@ ID = sys.argv[1]
 password = sys.argv[2]
 data = sys.argv[3]
 
-graph = Graph("bolt://localhost:11016", auth=("eliot", "1234"))
+graph = Graph("bolt://localhost:7687", auth=(ID, password))
 
 
 def file_len(fname):
